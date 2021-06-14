@@ -20,7 +20,6 @@
 		B647695126713AE600F93CA4 /* schema.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B647695026713AE600F93CA4 /* schema.graphql */; };
 		B6476A0B2671EE9400F93CA4 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A0A2671EE9400F93CA4 /* API.swift */; };
 		B6476A102671F54600F93CA4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A0F2671F54600F93CA4 /* NetworkManager.swift */; };
-		B6476A112671F54600F93CA4 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A0F2671F54600F93CA4 /* NetworkManager.swift */; };
 		B6476A172671F9EA00F93CA4 /* ResponseLoggingInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A162671F9EA00F93CA4 /* ResponseLoggingInterceptor.swift */; };
 		B6476A182671F9EA00F93CA4 /* ResponseLoggingInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A162671F9EA00F93CA4 /* ResponseLoggingInterceptor.swift */; };
 		B6476A202671FA4C00F93CA4 /* RequestLoggingInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6476A1F2671FA4C00F93CA4 /* RequestLoggingInterceptor.swift */; };
@@ -668,7 +667,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6476A112671F54600F93CA4 /* NetworkManager.swift in Sources */,
 				B6476A212671FA4C00F93CA4 /* RequestLoggingInterceptor.swift in Sources */,
 				B6AE916C267738CB0079C807 /* MockDataFailedManager.swift in Sources */,
 				B6AE9167267736E10079C807 /* MockDataManager.swift in Sources */,
