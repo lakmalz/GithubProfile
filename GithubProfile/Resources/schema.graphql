@@ -1,0 +1,49 @@
+query GitProfile($gitName: String!) {
+  user(login: $gitName) {
+    avatarUrl
+    name
+    login
+    email
+    followers {
+      totalCount
+    }
+    following {
+      totalCount
+    }
+    pinnedItems(first: 3, types: [REPOSITORY]) {
+      nodes {
+        ...RepositoryFragment
+      }
+    }
+    topRepositories(first: 10, orderBy: {direction: ASC, field: UPDATED_AT}) {
+      nodes {
+        ...RepositoryFragment
+      }
+    }
+    starredRepositories(first: 10) {
+      nodes {
+        ...RepositoryFragment
+      }
+    }
+  }
+}
+
+fragment RepositoryFragment on Repository {
+  name
+  description
+  stargazerCount
+  owner {
+    ... on User {
+      login
+      avatarUrl
+    }
+    ... on Organization {
+      name
+      avatarUrl
+    }
+  }
+  primaryLanguage {
+    name
+    color
+  }
+}

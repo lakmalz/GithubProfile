@@ -1,10 +1,3 @@
-//
-//  GithubProfileUITests.swift
-//  GithubProfileUITests
-//
-//  Created by Gayan on 6/9/21.
-//
-
 import XCTest
 
 class GithubProfileUITests: XCTestCase {

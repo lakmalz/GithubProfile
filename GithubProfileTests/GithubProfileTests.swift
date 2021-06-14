@@ -1,10 +1,3 @@
-//
-//  GithubProfileTests.swift
-//  GithubProfileTests
-//
-//  Created by Gayan on 6/9/21.
-//
-
 import XCTest
 @testable import GithubProfile
 
