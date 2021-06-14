@@ -11,7 +11,7 @@ class ProfileViewController: UIViewController {
     private var starredHorizontalView: HorizontalRepocitoryTableViewCell?
     private var topHorizontalView: HorizontalRepocitoryTableViewCell?
     private lazy var refreshControl = UIRefreshControl()
-
+    
     private let tableView : UITableView = {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
         return table
@@ -22,12 +22,12 @@ class ProfileViewController: UIViewController {
         presenter = ProfileViewPresenterImplementation.init(dataService: DataManager.instance, view: self)
         setupUI()
         presenter?.viewDidLoad()
-        
     }
     
     private func setupUI(){
         tableView.register(PinnedRepoTableViewCell.self, forCellReuseIdentifier: kTableCellIdentifier)
         tableView.register(HorizontalRepocitoryTableViewCell.self, forCellReuseIdentifier: kHorizontalRepocitoryCellIdentifier)
+        tableView.register(HorizontalRepocitoryStarredTableViewCell.self, forCellReuseIdentifier: kHorizontalRepocitoryStarredCellIdentifier)
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(self.refreshProfile(_:)), for: .valueChanged)
@@ -54,7 +54,7 @@ class ProfileViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor().colorFromHexString(background_color)
         
-           tableView.addSubview(refreshControl)
+        tableView.addSubview(refreshControl)
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.left.equalTo(self.view.snp.left)
@@ -99,21 +99,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.selectionStyle = .none
             presenter?.configure(forCell: cell, forRow: indexPath.row, repositoryType: .pinnedRepositories)
             return cell
-        }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: kHorizontalRepocitoryCellIdentifier, for: indexPath) as! HorizontalRepocitoryTableViewCell
-            cell.collectionView.delegate = self
-            cell.collectionView.dataSource = self
-            cell.collectionView.tag = repositoryType?.tag ?? 1
+        }else if(repositoryType == .starreedRepositories){
+            let cell = tableView.dequeueReusableCell(withIdentifier: kHorizontalRepocitoryStarredCellIdentifier, for: indexPath) as! HorizontalRepocitoryStarredTableViewCell
             cell.selectionStyle = .none
             cell.bringSubviewToFront(cell.collectionView)
-            switch presenter?.sectionRepositoryTypefor(section: indexPath.section) {
-            case .starreedRepositories:
-                    starredHorizontalView = cell
-            case .topRepositories:
-                    topHorizontalView = cell
-            default:
-                break
-            }
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.tag = eRepositoryType.starreedRepositories.tag
+            self.starredHorizontalView = cell
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: kHorizontalRepocitoryCellIdentifier, for: indexPath) as! HorizontalRepocitoryTableViewCell
+            cell.selectionStyle = .none
+            cell.bringSubviewToFront(cell.collectionView)
+            cell.collectionView.delegate = self
+            cell.collectionView.dataSource = self
+            cell.collectionView.tag = eRepositoryType.topRepositories.tag
+            self.topHorizontalView = cell
             return cell
         }
     }
@@ -131,9 +133,9 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == starredHorizontalView?.collectionView {
+        if collectionView.tag == eRepositoryType.topRepositories.tag{
             return presenter?.numberOfRepositoriesForType(repositoryType: .topRepositories) ?? 0
-        } else if collectionView == topHorizontalView?.collectionView {
+        } else if collectionView.tag == eRepositoryType.starreedRepositories.tag {
             return presenter?.numberOfRepositoriesForType(repositoryType: .starreedRepositories) ?? 0
         } else {
             return 0
@@ -143,9 +145,9 @@ extension ProfileViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: kHorizontalRepositoryCollectionCellIdentifier,
                                                             for: indexPath) as? HorizontalRepositoryCollectionView else { return UICollectionViewCell() }
-        if collectionView == topHorizontalView?.collectionView  {
+        if collectionView.tag == eRepositoryType.topRepositories.tag {
             presenter?.configure(forCell: cell, forRow: indexPath.row, repositoryType: .topRepositories)
-        } else if collectionView == starredHorizontalView?.collectionView  {
+        } else if collectionView.tag == eRepositoryType.starreedRepositories.tag {
             presenter?.configure(forCell: cell, forRow: indexPath.row, repositoryType: .starreedRepositories)
         }
         return cell
@@ -183,8 +185,8 @@ extension ProfileViewController: ProfileView{
     
     func refreshRepositories() {
         self.tableView.reloadData()
-        self.starredHorizontalView?.collectionView.reloadData()
         self.topHorizontalView?.collectionView.reloadData()
+        self.starredHorizontalView?.collectionView.reloadData()
     }
     
     func onError(errorMessage: String) {

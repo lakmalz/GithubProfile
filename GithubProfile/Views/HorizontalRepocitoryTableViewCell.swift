@@ -4,6 +4,8 @@ import SnapKit
 import Kingfisher
 
 let kHorizontalRepocitoryCellIdentifier = "HorizontalRepocitoryTableViewCell"
+let kHorizontalRepocitoryStarredCellIdentifier = "HorizontalRepocitoryStarredTableViewCell"
+
 
 class HorizontalRepocitoryTableViewCell: UITableViewCell {
     
@@ -37,4 +39,9 @@ class HorizontalRepocitoryTableViewCell: UITableViewCell {
             make.height.equalTo(180)
         }
     }
+}
+
+
+class HorizontalRepocitoryStarredTableViewCell: HorizontalRepocitoryTableViewCell {
+
 }

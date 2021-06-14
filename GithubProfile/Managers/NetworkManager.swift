@@ -4,7 +4,7 @@ import Apollo
 
 class NetworkManager{
     let GIT_URL = "https://api.github.com/graphql"
-        let ACCESS_TOKEN = "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"
+        let ACCESS_TOKEN = "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"
     
     static let instance = NetworkManager()
     

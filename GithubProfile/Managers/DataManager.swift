@@ -6,7 +6,7 @@ public class DataManager: Service {
     public static var instance = DataManager()
     
     func loadProfile(finish: @escaping (Profile?) -> Void) {
-        let query = GitProfileQuery(gitName: "cnoon")
+        let query = GitProfileQuery(gitName: "FlammerSL")
         NetworkManager.instance.client.fetch(query: query, cachePolicy: .fetchIgnoringCacheCompletely) { result in
             switch result {
             case .success(let graphQLResult):

@@ -33,7 +33,6 @@ protocol ProfileView: class {
     func showLoading()
     func hideLoading()
     func endPullToRefresh()
-    
 }
 
 protocol ProfileViewPresenter {
@@ -143,14 +142,12 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
     }
     
     func refreshProfile() {
-        CacheManager.instance.removeAllObjects { (result) in
-            if(result){
-                self._loadProfile(isRefresh: true)
-            }
-        }
+        _ = CacheManager.instance.removeAllObjects()
+        self._loadProfile(isRefresh: true)
     }
     
     private func _loadProfile(isRefresh: Bool = false) {
+        clearPreviousRecords()
         guard let service = dataService else {
             fatalError("Service need to be initialized")
         }
@@ -162,7 +159,6 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
             self.topRepositories = profile.topRepositories ?? []
             self.pinnedRepositories = profile.pinnedRepositories ?? []
             self.starredRepositories = profile.starredRepositories ?? []
-            self.tableViewSection = []
             self.tableViewSection.append(TableSection(repositoryType: .pinnedRepositories, repositories: self.pinnedRepositories))
             self.tableViewSection.append(TableSection(repositoryType: .topRepositories, repositories: self.topRepositories))
             self.tableViewSection.append(TableSection(repositoryType: .starreedRepositories, repositories: self.starredRepositories))
@@ -185,7 +181,7 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
                 if let profile = profile, let view = self.view {
                     self.profile = profile
                     view.refreshProfileView()
-                    self.tableViewSection = []
+                    
                     self.pinnedRepositories = profile.pinnedRepositories ?? []
                     self.tableViewSection.append(TableSection(repositoryType: .pinnedRepositories, repositories: self.pinnedRepositories))
                     
@@ -201,5 +197,13 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
                 
             })
         }
+    }
+    
+    func clearPreviousRecords(){
+        self.pinnedRepositories = []
+        self.topRepositories = []
+        self.starredRepositories = []
+        self.tableViewSection = []
+        view?.refreshRepositories()
     }
 }
