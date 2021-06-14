@@ -2,6 +2,14 @@
 Github profile detail retrieving using GraphQL
 
 
+![Simulator Screen Shot - iPhone 11 - 2021-06-14 at 20 27 36](https://user-images.githubusercontent.com/22807856/121913413-01214480-cd4f-11eb-97a3-8058b875511f.png)
+
+
+
+![Simulator Screen Shot - iPhone 11 - 2021-06-14 at 20 28 36](https://user-images.githubusercontent.com/22807856/121913553-1f874000-cd4f-11eb-962c-4ab25bcd20a7.png)
+
+
+
 Hi,
 
 In order to use this application, please follow the given instruction
@@ -15,6 +23,14 @@ In order to use this application, please follow the given instruction
 
 ![Screenshot 2021-06-14 at 19 27 04](https://user-images.githubusercontent.com/22807856/121905183-8143ac00-cd47-11eb-954d-ee200c690c9e.png)
 
+
+**Follwoing criteria has beeen fullfilled**U
+1. Usage of MVP architecture
+2. Used SnapKit for UI layouting
+3. iOS version set to 11 or higher
+4. Unit testing done for business layer (ProfilePresenter)
+5. Pull to refresh implemented to refresh cached data
+6. Caching data implemented for 1 day.
 
 
 
