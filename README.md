@@ -11,7 +11,7 @@ In order to use this application, please follow the given instruction
  
 ![image](https://user-images.githubusercontent.com/22807856/121880649-e4bfe080-cd2b-11eb-8026-c3863bcc45db.png)
 
-3. Once you get your token, you need to open the application from xcode and navigate to Constant file. There you will see a variable called "ACCESS_TOKEN". Replace your token with existing one. Also set the github name you want to retrieve data
+3. Once you get your token, you need to open the application from xcode and navigate to Constant file which is inside the helper folder. There you have a variable called "ACCESS_TOKEN". Replace your token with existing one. Also set the github name you want to retrieve data
 
 ![Screenshot 2021-06-14 at 19 27 04](https://user-images.githubusercontent.com/22807856/121905183-8143ac00-cd47-11eb-954d-ee200c690c9e.png)
 
