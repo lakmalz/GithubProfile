@@ -10,5 +10,5 @@ struct AppFontName {
     static let semiBold = "SourceSansPro-SemiBold"
 }
 
-let ACCESS_TOKEN = "ghp_PUcgWZSTUJTGSPApmFWNrtdllOvlM53adkAC"
+let ACCESS_TOKEN = "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"
 let GIT_USER_NAME = "cnoon"

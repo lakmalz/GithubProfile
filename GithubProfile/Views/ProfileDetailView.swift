@@ -81,7 +81,7 @@ class ProfileDetailView: UIView, ProfileInfoView {
         self.addSubview(followingCountLable)
         followingCountLable.snp.makeConstraints { (constraint) in
             constraint.height.equalTo(24)
-            constraint.leading.equalTo(followersLabel.snp.trailing)
+            constraint.leading.equalTo(followersLabel.snp.trailing).offset(16)
             constraint.centerY.equalTo(followersLabel.snp.centerY)
         }
         
