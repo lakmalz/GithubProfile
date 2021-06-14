@@ -1,6 +1,6 @@
 import Foundation
 
-struct Profile: Codable{
+public struct Profile: Codable{
     var name: String
     var email: String
     var followers: Int

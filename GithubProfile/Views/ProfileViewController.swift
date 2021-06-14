@@ -19,7 +19,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = ProfileViewPresenterImplementation.init(dataService: NetworkManager.instance, view: self)
+        presenter = ProfileViewPresenterImplementation.init(dataService: DataManager.instance, view: self)
         setupUI()
         presenter?.viewDidLoad()
         

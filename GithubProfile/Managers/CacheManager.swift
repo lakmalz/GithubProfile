@@ -1,10 +1,3 @@
-//
-//  CacheManager.swift
-//  GithubProfile
-//
-//  Created by Gayan on 6/14/21.
-//
-
 import Foundation
 import Cache
 
@@ -15,15 +8,15 @@ class CacheManager {
     
     public static var instance = CacheManager()
     var _storage: Storage<String, Profile>?
-
+    
     init() {
         let diskConfig = DiskConfig(name: "GithubProfile", expiry: .seconds(_cacheDuration))
         let memoryConfig = MemoryConfig(expiry: .seconds(_cacheDuration), countLimit: 10, totalCostLimit: 10)
         
         _storage = try? Storage<String, Profile>(
-          diskConfig: diskConfig,
-          memoryConfig: memoryConfig,
-          transformer: TransformerFactory.forCodable(ofType: Profile.self)
+            diskConfig: diskConfig,
+            memoryConfig: memoryConfig,
+            transformer: TransformerFactory.forCodable(ofType: Profile.self)
         )
     }
     
@@ -52,6 +45,19 @@ class CacheManager {
         } catch{
             print(error.localizedDescription)
             return false
+        }        
+    }
+    
+    func removeAllObjects(completion: @escaping (Bool) -> ()) {
+        _storage?.async.removeAll() { result in
+            switch result {
+            case .value():
+                print("removal completes")
+                completion(true)
+            case .error(let error):
+                print(error)
+                completion(false)
+            }
         }
     }
 }

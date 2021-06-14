@@ -48,8 +48,12 @@ protocol ProfileViewPresenter {
     func refreshProfile()
 }
 
+protocol Service {
+    func loadProfile(finish: @escaping (Profile?) -> Void)
+}
+
 class ProfileViewPresenterImplementation {
-    weak var dataService: NetworkManager?
+    private var dataService: Service?
     fileprivate weak var view: ProfileView?
     
     private var profile: Profile?
@@ -58,26 +62,9 @@ class ProfileViewPresenterImplementation {
     var topRepositories: [RepositoryItem] = []
     var starredRepositories: [RepositoryItem] = []
     
-    required init(dataService: NetworkManager, view: ProfileView) {
+    required init(dataService: Service, view: ProfileView) {
         self.dataService = dataService
         self.view = view
-    }
-    
-    private func processRepository(repo: RepositoryFragment?) -> RepositoryItem {
-        var ownerName = "", ownerImageUrl = ""
-        if let user = repo?.owner.asUser {
-            ownerName = user.login
-            ownerImageUrl = user.avatarUrl
-        } else if let org = repo?.owner.asOrganization {
-            ownerName = org.name ?? "N/A"
-            ownerImageUrl = org.avatarUrl
-        }
-        
-        return RepositoryItem(ownerName: ownerName, ownerImage: ownerImageUrl, repoName: repo?.name ?? "N/A",
-                              reposDesc: repo?.description ?? "N/A",
-                              starCount: "\(repo?.stargazerCount ?? 0)",
-                              language: repo?.primaryLanguage?.name ?? "N/A",
-                              languageColor: repo?.primaryLanguage?.color ?? "#FFFF")
     }
 }
 
@@ -156,17 +143,14 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
     }
     
     func refreshProfile() {
-        _ = CacheManager.instance.clearExpiredObjects()
-        _loadProfile(isRefresh: true)
+        CacheManager.instance.removeAllObjects { (result) in
+            if(result){
+                self._loadProfile(isRefresh: true)
+            }
+        }
     }
     
     private func _loadProfile(isRefresh: Bool = false) {
-
-        self.pinnedRepositories.removeAll()
-        self.topRepositories.removeAll()
-        self.starredRepositories.removeAll()
-        self.tableViewSection.removeAll()
-        let query = GitProfileQuery(gitName: "cnoon")
         guard let service = dataService else {
             fatalError("Service need to be initialized")
         }
@@ -178,7 +162,7 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
             self.topRepositories = profile.topRepositories ?? []
             self.pinnedRepositories = profile.pinnedRepositories ?? []
             self.starredRepositories = profile.starredRepositories ?? []
-            
+            self.tableViewSection = []
             self.tableViewSection.append(TableSection(repositoryType: .pinnedRepositories, repositories: self.pinnedRepositories))
             self.tableViewSection.append(TableSection(repositoryType: .topRepositories, repositories: self.topRepositories))
             self.tableViewSection.append(TableSection(repositoryType: .starreedRepositories, repositories: self.starredRepositories))
@@ -192,57 +176,30 @@ extension ProfileViewPresenterImplementation: ProfileViewPresenter{
                 view?.endPullToRefresh()
             }
         }else{
-            service.client.fetch(query: query) { result in
+            service.loadProfile(finish: { (profile) in
                 if(!isRefresh){
                     self.view?.hideLoading()
                 }else{
                     self.view?.endPullToRefresh()
                 }
-                switch result {
-                case .success(let graphQLResult):
-                    if let userProfile = graphQLResult.data?.user, let view = self.view {
-                        
-                        var profile = Profile(name: userProfile.name ?? "", email: userProfile.email, followers: userProfile.followers.totalCount, following: userProfile.following.totalCount, imageUrl: userProfile.avatarUrl, loginName: userProfile.login)
-                        
-                        self.profile = profile
-                        view.refreshProfileView()
-                        
-                        var pinnedRepositories:[RepositoryItem] = []
-                        userProfile.pinnedItems.nodes?.forEach { node in
-                            let repo = node?.fragments.repositoryFragment
-                            pinnedRepositories.append(self.processRepository(repo: repo))
-                        }
-                        self.pinnedRepositories = pinnedRepositories
-                        profile.pinnedRepositories = pinnedRepositories
-                        self.tableViewSection.append(TableSection(repositoryType: .pinnedRepositories, repositories: self.pinnedRepositories))
-                        
-                        var topRepositories:[RepositoryItem] = []
-                        userProfile.topRepositories.nodes?.forEach { node in
-                            let repo = node?.fragments.repositoryFragment
-                            topRepositories.append(self.processRepository(repo: repo))
-                        }
-                        self.topRepositories = topRepositories
-                        profile.topRepositories = topRepositories
-                        self.tableViewSection.append(TableSection(repositoryType: .topRepositories, repositories: self.topRepositories))
-                        
-                        var starredRepositories:[RepositoryItem] = []
-                        userProfile.starredRepositories.nodes?.forEach { node in
-                            let repo = node?.fragments.repositoryFragment
-                            starredRepositories.append(self.processRepository(repo: repo))
-                        }
-                        self.starredRepositories = starredRepositories
-                        profile.starredRepositories = starredRepositories
-                        self.tableViewSection.append(TableSection(repositoryType: .starreedRepositories, repositories: self.starredRepositories))
-                        
-                        CacheManager.instance.setStoredProfile(value: profile)
-                        view.refreshRepositories()
-                        
-                    }
+                if let profile = profile, let view = self.view {
+                    self.profile = profile
+                    view.refreshProfileView()
+                    self.tableViewSection = []
+                    self.pinnedRepositories = profile.pinnedRepositories ?? []
+                    self.tableViewSection.append(TableSection(repositoryType: .pinnedRepositories, repositories: self.pinnedRepositories))
                     
-                case .failure(let error):
-                    self.view?.onError(errorMessage: error.localizedDescription)
+                    self.topRepositories = profile.topRepositories ?? []
+                    self.tableViewSection.append(TableSection(repositoryType: .topRepositories, repositories: self.topRepositories))
+                    
+                    self.starredRepositories = profile.starredRepositories ?? []
+                    self.tableViewSection.append(TableSection(repositoryType: .starreedRepositories, repositories: self.starredRepositories))
+                    
+                    CacheManager.instance.setStoredProfile(value: profile)
+                    view.refreshRepositories()
                 }
-            }
+                
+            })
         }
     }
 }

@@ -1,10 +1,3 @@
-//
-//  Constant.swift
-//  GithubProfile
-//
-//  Created by Gayan on 6/13/21.
-//
-
 import Foundation
 
 

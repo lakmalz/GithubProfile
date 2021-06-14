@@ -2,23 +2,23 @@ import Foundation
 import Apollo
 
 
-class NetworkManager {
+class NetworkManager{
     let GIT_URL = "https://api.github.com/graphql"
-    let ACCESS_TOKEN = "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"
+        let ACCESS_TOKEN = "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"
     
     static let instance = NetworkManager()
     
     private(set) lazy var client: ApolloClient = {
-          let cache = InMemoryNormalizedCache()
-          let store = ApolloStore(cache: cache)
-          let client = URLSessionClient()
-          let provider = NetworkInterceptorProvider(store: store, client: client)
-          let url = URL(string: GIT_URL)!
-          let requestChainTransport = RequestChainNetworkTransport(interceptorProvider: provider,endpointURL: url, additionalHeaders: ["Authorization": "Bearer \(ACCESS_TOKEN)"])
-          return ApolloClient(networkTransport: requestChainTransport,
-                              store: store)
-      }()
-    }
+        let cache = InMemoryNormalizedCache()
+        let store = ApolloStore(cache: cache)
+        let client = URLSessionClient()
+        let provider = NetworkInterceptorProvider(store: store, client: client)
+        let url = URL(string: GIT_URL)!
+        let requestChainTransport = RequestChainNetworkTransport(interceptorProvider: provider,endpointURL: url, additionalHeaders: ["Authorization": "Bearer \(ACCESS_TOKEN)"])
+        return ApolloClient(networkTransport: requestChainTransport,
+                            store: store)
+    }()
+}
 
 struct NetworkInterceptorProvider: InterceptorProvider {
     private let store: ApolloStore
