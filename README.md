@@ -11,13 +11,11 @@ In order to use this application, please follow the given instruction
  
 ![image](https://user-images.githubusercontent.com/22807856/121880649-e4bfe080-cd2b-11eb-8026-c3863bcc45db.png)
 
-3. Once you get your token, you need to open the application from xcode and navigate to NetworkManager class. There you will see a variable falled "ACCESS_TOKEN". Replace your token with existing one. 
+3. Once you get your token, you need to open the application from xcode and navigate to Constant file. There you will see a variable called "ACCESS_TOKEN". Replace your token with existing one. Also set the github name you want to retrieve data
 
-![image](https://user-images.githubusercontent.com/22807856/121880854-22246e00-cd2c-11eb-8aaf-1112016362b7.png)
+![Screenshot 2021-06-14 at 19 27 04](https://user-images.githubusercontent.com/22807856/121905183-8143ac00-cd47-11eb-954d-ee200c690c9e.png)
 
-4. In order to retrive someone or your github profile info, you need to navigate to DataManager.swift file and change the gitName. Volla thats it.
 
-![image](https://user-images.githubusercontent.com/22807856/121881028-54ce6680-cd2c-11eb-98ec-aae93b1447be.png)
 
 
 Thank you
