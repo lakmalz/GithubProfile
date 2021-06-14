@@ -8,5 +8,7 @@ struct AppFontName {
     static let bold = "SourceSansPro-Bold"
     static let italic = "SourceSansPro-Italic"
     static let semiBold = "SourceSansPro-SemiBold"
-
 }
+
+let ACCESS_TOKEN = "ghp_PUcgWZSTUJTGSPApmFWNrtdllOvlM53adkAC"
+let GIT_USER_NAME = "cnoon"
