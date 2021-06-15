@@ -1,12 +1,11 @@
 # GithubProfile
 Github profile detail retrieving using GraphQL
 
-
-![Simulator Screen Shot - iPhone 11 - 2021-06-14 at 20 27 36](https://user-images.githubusercontent.com/22807856/121913413-01214480-cd4f-11eb-97a3-8058b875511f.png)
-
-
-
-![Simulator Screen Shot - iPhone 11 - 2021-06-14 at 20 28 36](https://user-images.githubusercontent.com/22807856/121913553-1f874000-cd4f-11eb-962c-4ab25bcd20a7.png)
+<p align="left">
+ <img src="https://user-images.githubusercontent.com/22807856/121913413-01214480-cd4f-11eb-97a3-8058b875511f.png" width="200">
+ <img src="https://user-images.githubusercontent.com/22807856/121913553-1f874000-cd4f-11eb-962c-4ab25bcd20a7.png" width="200">
+ <img src="https://user-images.githubusercontent.com/22807856/121999945-b09bfc80-cdcb-11eb-80a4-bab770c40c1a.png" width="200">
+</p>
 
 
 
